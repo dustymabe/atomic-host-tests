@@ -4,7 +4,7 @@
 # use --upgrade-unchanged-exit-77 to also force a fail when
 # no upgrade is performed (we always expect an upgrade)
 - name: Perform the upgrade
-  command: rpm-ostree upgrade --upgrade-unchanged-exit-77
+  command: rpm-ostree upgrade --allow-downgrade --upgrade-unchanged-exit-77
   register: upgrade
   until: upgrade.rc == 0
   retries: 3
