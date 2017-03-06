@@ -274,10 +274,10 @@
         - atomic_installation_verify
         - cloud_image
 
-    # Upgrade and reboot
-    - role: rpm_ostree_upgrade
-      tags:
-        - rpm_ostree_upgrade
+#   # Upgrade and reboot
+#   - role: rpm_ostree_upgrade
+#     tags:
+#       - rpm_ostree_upgrade
 
     - role: reboot
       wait_for_services:
