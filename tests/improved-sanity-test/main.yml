@@ -142,12 +142,12 @@
         - docker_remove_all
         - cloud_image
 
-    # Install package using package layering
-    - role: rpm_ostree_install
-      packages: "{{ g_pkg }}"
-      reboot: false
-      tags:
-        - rpm_ostree_install
+#   # Install package using package layering
+#   - role: rpm_ostree_install
+#     packages: "{{ g_pkg }}"
+#     reboot: false
+#     tags:
+#       - rpm_ostree_install
 
     - role: reboot
       wait_for_services:
@@ -156,10 +156,10 @@
         - reboot_pre_up_install
         - cloud_image
 
-    - role: rpm_ostree_install_verify
-      package: "{{ g_pkg }}"
-      tags:
-        - rpm_ostree_install_verify
+#   - role: rpm_ostree_install_verify
+#     package: "{{ g_pkg }}"
+#     tags:
+#       - rpm_ostree_install_verify
 
     # Verify admin unlock by installing an RPM
     - role: ostree_admin_unlock_hotfix
@@ -281,16 +281,16 @@
         - atomic_installation_verify
         - cloud_image
 
-    # Upgrade and reboot
-    - role: rpm_ostree_upgrade
-      tags:
-        - rpm_ostree_upgrade
+#   # Upgrade and reboot
+#   - role: rpm_ostree_upgrade
+#     tags:
+#       - rpm_ostree_upgrade
 
-    - role: reboot
-      wait_for_services:
-        - docker
-      tags:
-        - reboot_pre_upgrade
+#   - role: reboot
+#     wait_for_services:
+#       - docker
+#     tags:
+#       - reboot_pre_upgrade
 
 - name: Improved Sanity Test - Post-Upgrade
   hosts: all
@@ -319,9 +319,9 @@
         - cloud_image
       check_mode: no
 
-    - role: atomic_host_check
-      tags:
-        - atomic_host_check
+#   - role: atomic_host_check
+#     tags:
+#       - atomic_host_check
 
     # Setup facts again. (Need to use the 'check_mode: no' option to ensure the
     # role runs again)
@@ -331,46 +331,46 @@
         - cloud_image
       check_mode: no
 
-    # We remove any subscriptions after the upgrade to verify that
-    # 'rpm-ostree status' with the 'unconfigured-state' field present.
-    # https://bugzilla.redhat.com/show_bug.cgi?id=1421867
-    - role: redhat_unsubscribe
-      unconfigured_state: true
-      when: ansible_distribution == 'RedHat'
-      tags:
-        - redhat_unsubscribe
+#   # We remove any subscriptions after the upgrade to verify that
+#   # 'rpm-ostree status' with the 'unconfigured-state' field present.
+#   # https://bugzilla.redhat.com/show_bug.cgi?id=1421867
+#   - role: redhat_unsubscribe
+#     unconfigured_state: true
+#     when: ansible_distribution == 'RedHat'
+#     tags:
+#       - redhat_unsubscribe
 
-    # Verify that rpm-ostree can be run as non-root or sudo
-    - role: command_privilege_verify
-      cmd: rpm-ostree status
-      user: bin
-      expect_failure: false
-      tags:
-        - command_privilege_verify
+#   # Verify that rpm-ostree can be run as non-root or sudo
+#   - role: command_privilege_verify
+#     cmd: rpm-ostree status
+#     user: bin
+#     expect_failure: false
+#     tags:
+#       - command_privilege_verify
 
-    # Compare 'atomic host status' and 'rpm-ostree status' again
-    - role: atomic_host_status_verify
-      stop_daemon: true
-      tags:
-        - atomic_host_status_verify
+#   # Compare 'atomic host status' and 'rpm-ostree status' again
+#   - role: atomic_host_status_verify
+#     stop_daemon: true
+#     tags:
+#       - atomic_host_status_verify
 
-    # Re-subscribe
-    - role: redhat_subscription
-      when: ansible_distribution == 'RedHat'
-      tags:
-        - redhat_subscription
+#   # Re-subscribe
+#   - role: redhat_subscription
+#     when: ansible_distribution == 'RedHat'
+#     tags:
+#       - redhat_subscription
 
-    # Verify correct SELinux labels again
-    - role: selinux_verify
-      tags:
-        - selinux_verify
+#   # Verify correct SELinux labels again
+#   - role: selinux_verify
+#     tags:
+#       - selinux_verify
 
-    # Verify the change to the SELinux file context persisted
-    - role: semanage_fcontext_verify
-      test_dir: "{{ g_semanage_test_dir }}"
-      test_context: "{{ g_semanage_test_context }}"
-      tags:
-        - semanage_fcontext_verify
+#   # Verify the change to the SELinux file context persisted
+#   - role: semanage_fcontext_verify
+#     test_dir: "{{ g_semanage_test_dir }}"
+#     test_context: "{{ g_semanage_test_context }}"
+#     tags:
+#       - semanage_fcontext_verify
 
     # Verify the SELinux boolean changes
     - role: selinux_boolean_verify
@@ -378,15 +378,15 @@
         - selinux_boolean_verify
         - cloud_image
 
-    - role: docker_pull_run_remove
-      tags:
-        - docker_pull_run_remove
+#   - role: docker_pull_run_remove
+#     tags:
+#       - docker_pull_run_remove
 
-    # Check layered package is still installed
-    - role: rpm_ostree_install_verify
-      package: "{{ g_pkg }}"
-      tags:
-        - rpm_ostree_install_verify
+#   # Check layered package is still installed
+#   - role: rpm_ostree_install_verify
+#     package: "{{ g_pkg }}"
+#     tags:
+#       - rpm_ostree_install_verify
 
     - role: rpm_ostree_install
       packages: httpd
@@ -400,10 +400,10 @@
         - reboot_post_up_install
         - cloud_image
 
-    - role: rpm_ostree_install_verify
-      package: "{{ g_pkg }}"
-      tags:
-        - rpm_ostree_install_verify
+#   - role: rpm_ostree_install_verify
+#     package: "{{ g_pkg }}"
+#     tags:
+#       - rpm_ostree_install_verify
 
     - role: rpm_ostree_install_verify
       package: httpd
@@ -425,26 +425,26 @@
         - url_verify
         - cloud_image
 
-    # Check admin unlock overlayfs is no longer there after upgrade
-    - role: overlayfs_verify_missing
-      tags:
-        - overlayfs_verify_missing
+#   # Check admin unlock overlayfs is no longer there after upgrade
+#   - role: overlayfs_verify_missing
+#     tags:
+#       - overlayfs_verify_missing
 
-    # Verify admin unlocked package is removed after upgrade
-    - role: package_verify_missing
-      rpm_name: "{{ g_rpm_name }}"
-      tags:
-        - package_verify_missing
+#   # Verify admin unlocked package is removed after upgrade
+#   - role: package_verify_missing
+#     rpm_name: "{{ g_rpm_name }}"
+#     tags:
+#       - package_verify_missing
 
-    # Check that /tmp is properly setup again
-    - role: tmp_check_perms
-      tags:
-        - tmp_check_perms
+#   # Check that /tmp is properly setup again
+#   - role: tmp_check_perms
+#     tags:
+#       - tmp_check_perms
 
-    # Check that the RPM database is functional again
-    - role: rpmdb_verify
-      tags:
-        - rpmdb_verify
+#   # Check that the RPM database is functional again
+#   - role: rpmdb_verify
+#     tags:
+#       - rpmdb_verify
 
     # Verify that the new users, /etc changes, and /var additions are still
     # present after the upgrade
@@ -466,81 +466,81 @@
         - var_files_present
         - cloud_image
 
-    # Add more users and more files to /var ahead of the rollback
-    - role: user_add
-      ua_uid: "{{ g_uid2 }}"
-      tags:
-        - user_add
+#   # Add more users and more files to /var ahead of the rollback
+#   - role: user_add
+#     ua_uid: "{{ g_uid2 }}"
+#     tags:
+#       - user_add
 
-    - role: user_verify_present
-      uvp_uid: "{{ g_uid2 }}"
-      tags:
-        - user_verify_present
+#   - role: user_verify_present
+#     uvp_uid: "{{ g_uid2 }}"
+#     tags:
+#       - user_verify_present
 
-    - role: var_add_files
-      vaf_filename: "{{ g_file2 }}"
-      vaf_dirname: "{{ g_dir2 }}"
-      tags:
-        - var_add_files
+#   - role: var_add_files
+#     vaf_filename: "{{ g_file2 }}"
+#     vaf_dirname: "{{ g_dir2 }}"
+#     tags:
+#       - var_add_files
 
-    - role: var_files_present
-      vfp_filename: "{{ g_file2 }}"
-      vfp_dirname: "{{ g_dir2 }}"
-      tags:
-        - var_files_present
+#   - role: var_files_present
+#     vfp_filename: "{{ g_file2 }}"
+#     vfp_dirname: "{{ g_dir2 }}"
+#     tags:
+#       - var_files_present
 
-    # Install, run and uninstall cockpit using atomic command
-    - role: atomic_installation_verify
-      tags:
-        - atomic_installation_verify
+#   # Install, run and uninstall cockpit using atomic command
+#   - role: atomic_installation_verify
+#     tags:
+#       - atomic_installation_verify
 
-    # Run the previously created docker layered image, then remove the container and the image.
-    - role: atomic_run_verify
-      container: "{{ g_httpd_name }}"
-      tags:
-        - atomic_run_verify
+#   # Run the previously created docker layered image, then remove the container and the image.
+#   - role: atomic_run_verify
+#     container: "{{ g_httpd_name }}"
+#     tags:
+#       - atomic_run_verify
 
-    - role: atomic_stop_verify
-      container: "{{ g_httpd_name }}"
-      tags:
-        - atomic_stop_verify
+#   - role: atomic_stop_verify
+#     container: "{{ g_httpd_name }}"
+#     tags:
+#       - atomic_stop_verify
 
-    - role: docker_rm_httpd_container
-      tags:
-        - docker_rm_httpd_container
+#   - role: docker_rm_httpd_container
+#     tags:
+#       - docker_rm_httpd_container
 
-    - role: docker_rmi_httpd_image
-      tags:
-        - docker_rmi_httpd_image
+#   - role: docker_rmi_httpd_image
+#     tags:
+#       - docker_rmi_httpd_image
 
     - role: docker_remove_all
       tags:
         - docker_remove_all
         - cloud_image
 
-    # Validate 'atomic' commands again.
-    - role: atomic_pull_verify
-      tags:
-        - atomic_pull_verify
+#   # Validate 'atomic' commands again.
+#   - role: atomic_pull_verify
+#     tags:
+#       - atomic_pull_verify
 
-    - role: docker_remove_all
-      tags:
-        - docker_remove_all
+#   - role: docker_remove_all
+#     tags:
+#       - docker_remove_all
 
-    - role: atomic_scan_verify
-      tags:
-        - atomic_scan_verify
+#   - role: atomic_scan_verify
+#     tags:
+#       - atomic_scan_verify
 
-    # Rollback and reboot
-    - role: rpm_ostree_rollback
-      tags:
-        - rpm_ostree_rollback
+#   # Rollback and reboot
+#   - role: rpm_ostree_rollback
+#     tags:
+#       - rpm_ostree_rollback
 
-    - role: reboot
-      wait_for_services:
-        - docker
-      tags:
-        - reboot_post_upgrade
+#   - role: reboot
+#     wait_for_services:
+#       - docker
+#     tags:
+#       - reboot_post_upgrade
 
 - name: Improved Sanity Test - Post-Rollback
   hosts: all
@@ -569,79 +569,79 @@
         - cloud_image
       check_mode: no
 
-    - role: atomic_host_check
-      tags:
-        - atomic_host_check
+#   - role: atomic_host_check
+#     tags:
+#       - atomic_host_check
 
-    - role: selinux_verify
-      tags:
-        - selinux_verify
+#   - role: selinux_verify
+#     tags:
+#       - selinux_verify
 
-    # Verify that the change to the SELinux file context still exists in
-    # the original deployment
-    - role: semanage_fcontext_verify
-      test_dir: "{{ g_semanage_test_dir }}"
-      test_context: "{{ g_semanage_test_context }}"
-      tags:
-        - semanage_fcontext_verify
+#   # Verify that the change to the SELinux file context still exists in
+#   # the original deployment
+#   - role: semanage_fcontext_verify
+#     test_dir: "{{ g_semanage_test_dir }}"
+#     test_context: "{{ g_semanage_test_context }}"
+#     tags:
+#       - semanage_fcontext_verify
 
-    # Check layered package is still installed
-    - role: rpm_ostree_install_verify
-      package: "{{ g_pkg }}"
-      tags:
-        - rpm_ostree_install_verify
+#   # Check layered package is still installed
+#   - role: rpm_ostree_install_verify
+#     package: "{{ g_pkg }}"
+#     tags:
+#       - rpm_ostree_install_verify
 
-    # Check http package is not installed
-    - role: rpm_ostree_uninstall_verify
-      package: httpd
-      tags:
-        - rpm_ostree_uninstall_verify
+#   # Check http package is not installed
+#   - role: rpm_ostree_uninstall_verify
+#     package: httpd
+#     tags:
+#       - rpm_ostree_uninstall_verify
 
-    # Check admin unlock overlayfs missing
-    - role: overlayfs_verify_missing
-      tags:
-        - overlayfs_verify_missing
+#   # Check admin unlock overlayfs missing
+#   - role: overlayfs_verify_missing
+#     tags:
+#       - overlayfs_verify_missing
 
-    # Check that /tmp is properly setup yet again
-    - role: tmp_check_perms
-      tags:
-        - tmp_check_perms
+#   # Check that /tmp is properly setup yet again
+#   - role: tmp_check_perms
+#     tags:
+#       - tmp_check_perms
 
-    # Check that the RPM database is functional yet again
-    - role: rpmdb_verify
-      tags:
-        - rpmdb_verify
+#   # Check that the RPM database is functional yet again
+#   - role: rpmdb_verify
+#     tags:
+#       - rpmdb_verify
 
-    # Verify changes still exist in original tree
-    - role: etc_verify_changes
-      tags:
-        - etc_verify_changes
+#   # Verify changes still exist in original tree
+#   - role: etc_verify_changes
+#     tags:
+#       - etc_verify_changes
 
-    # Verify first user added is still present in original tree
-    - role: user_verify_present
-      uvp_uid: "{{ g_uid1 }}"
-      tags:
-        - user_verify_present
+#   # Verify first user added is still present in original tree
+#   - role: user_verify_present
+#     uvp_uid: "{{ g_uid1 }}"
+#     tags:
+#       - user_verify_present
 
-    # Verify first files dropped in /var are still in original tree
-    - role: var_files_present
-      vfp_filename: "{{ g_file1 }}"
-      vfp_dirname: "{{ g_dir1 }}"
-      tags:
-        - var_files_present
+#   # Verify first files dropped in /var are still in original tree
+#   - role: var_files_present
+#     vfp_filename: "{{ g_file1 }}"
+#     vfp_dirname: "{{ g_dir1 }}"
+#     tags:
+#       - var_files_present
 
-    # Verify that the newest user is not present in the previous tree
-    - role: user_verify_missing
-      uvm_uid: "{{ g_uid2 }}"
-      tags:
-        - user_verify_missing
+#   # Verify that the newest user is not present in the previous tree
+#   - role: user_verify_missing
+#     uvm_uid: "{{ g_uid2 }}"
+#     tags:
+#       - user_verify_missing
 
-    # Verify the most recent changes to /var are present
-    - role: var_files_present
-      vfp_filename: "{{ g_file2 }}"
-      vfp_dirname: "{{ g_dir2 }}"
-      tags:
-        - var_files_present
+#   # Verify the most recent changes to /var are present
+#   - role: var_files_present
+#     vfp_filename: "{{ g_file2 }}"
+#     vfp_dirname: "{{ g_dir2 }}"
+#     tags:
+#       - var_files_present
 
     # cleanup our subscriptions because we are nice people
     - role: redhat_unsubscribe
